@@ -121,9 +121,15 @@ if __name__ == "__main__":
               "3) Reveal mister X\n"
               "4) Update map\n")
         if option == "1":
-            game.update_misterx(Ticket[input(
-                f"Type of ticket ({', '.join(map(str, Ticket))}): ")]
-            )
+            while True:
+                type_str = input(f"Type of ticket ({', '.join(map(str, Ticket))}): ")
+                try:
+                    ticket = Ticket[type_str]
+                except KeyError:
+                    print("Invalid type")
+                else:
+                    break
+            game.update_misterx(ticket)
         elif option == "2":
             detectives = []
             barrages = list(game.barrages)
@@ -132,10 +138,14 @@ if __name__ == "__main__":
                     f"Where is detectives at position {detective} going: ")))
                 if input("Want to leave a barrage (yes/no)? ") == "yes":
                     b_to_move = int(input(f"Which one do you want to move {barrages}? "))
+                    if b_to_move not in barrages:
+                        print("Invalid barrage number!!!!!")
+                        break
                     barrages.remove(b_to_move)
                     barrages.append(detective)
-            game.update_detectives(detectives)
-            game.update_barrages(barrages)
+            else:
+                game.update_detectives(detectives)
+                game.update_barrages(barrages)
         elif option == "3":
             game.indicate_mister_x(int(input("Where is Mister X? ")))
         elif option == "4":
@@ -143,4 +153,3 @@ if __name__ == "__main__":
         else:
             print("You are stupid")
     game.image()
-
